@@ -1,0 +1,8 @@
+
+message csTestMsg {
+  optional uint32 type = 1;
+}
+
+message scTestMsg {
+  optional uint32 value = 1;
+}
