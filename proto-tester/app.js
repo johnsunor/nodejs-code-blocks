@@ -2,9 +2,10 @@
 var fs = require('fs');
 var async = require('async');
 var protobuf = require('protocol-buffers');
-var logger = require('./util/logger');
 var utils = require('./util/utils');
 var TcpClient = require('./tcpClient');
+
+var logger = console;
 
 var genMessages = function(target) {
   if (!fs.existsSync(target)) {
@@ -48,7 +49,7 @@ async.waterfall([
   function(next) {
     client.connect(function(err) {
       if (err) {
-        console.log('client setup failed: ', err);
+        logger.log('client setup failed: ', err);
       }
       next(err);
     });
@@ -58,13 +59,13 @@ async.waterfall([
     var uid = 123;
     var cmd = 123;
     var csMsg = testproto.csTestMsg.encode({type : 123});
-    tcpClient.send(uid, cmd, csMsg, (err, header, data) => {
+    client.send(uid, cmd, csMsg, (err, header, data) => {
       if (err) {
-        console.log('err: ', err);
+        logger.log('err: ', err);
       } else {
-        console.log('header: ', header);
+        logger.log('header: ', header);
         var scMsg = testproto.scTestMsg.decode(data);
-        console.log('scMsg: ', scMsg);
+        logger.log('scMsg: ', scMsg);
       }
       next(err);
     });
